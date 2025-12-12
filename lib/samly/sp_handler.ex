@@ -36,12 +36,12 @@ defmodule Samly.SPHandler do
 
     with {:ok, assertion} <- Helper.decode_idp_auth_resp(sp, saml_encoding, saml_response),
          :ok <- validate_authresp(conn, assertion, relay_state),
-         assertion = %Assertion{assertion | idp_id: idp_id},
+         assertion = %{assertion | idp_id: idp_id},
          conn = conn |> put_private(:samly_assertion, assertion),
          {:halted, %Conn{halted: false} = conn} <- {:halted, pipethrough(conn, pipeline)} do
       updated_assertion = conn.private[:samly_assertion]
       computed = updated_assertion.computed
-      assertion = %Assertion{assertion | computed: computed, idp_id: idp_id}
+      assertion = %{assertion | computed: computed, idp_id: idp_id}
 
       nameid = assertion.subject.name
       assertion_key = {idp_id, nameid}
