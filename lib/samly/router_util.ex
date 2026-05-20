@@ -10,7 +10,7 @@ defmodule Samly.RouterUtil do
 
   def check_idp_id(%Conn{private: %{samly_idp: %IdpData{}}} = conn, _opts), do: conn
 
-  def check_idp_id(conn, _opts), do: conn
+  def check_idp_id(conn, _opts) do
     idp_id_from = Application.get_env(:samly, :idp_id_from)
 
     idp_id =
